@@ -1,14 +1,15 @@
+import { api } from "@/lib/axios";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import {useState}from "react";
 
 export default function Alunos() {
 
-    const alunos = [
-        {matricula:'202601', nome:'Wesley Gomes', dataNasc:'2000-05-06',email:'wesley@email.com'},
-        {matricula:'202602', nome:'Wesley Gomes', dataNasc:'2000-05-06',email:'wesley@email.com'},
-        {matricula:'202603', nome:'Wesley Gomes', dataNasc:'2000-05-06',email:'wesley@email.com'},
-    ]
-
+    const [alunos,setAlunos]= useState([])
+useEffct(async()=>{
+  const resposta =await api.get("alunos")
+  seteAlunos(resposta.data)
+},[])
     return (
         <DataTable emptyMessage="Nenhum aluno encontrado"
         value={alunos}>
