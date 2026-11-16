@@ -1,4 +1,5 @@
 'use client'
+import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { InputText } from 'primereact/inputtext'
 import { Nullable } from 'primereact/ts-helpers'
@@ -63,6 +64,10 @@ export default function CadastrarAluno() {
                         placeholder="Digite o e-mail do aluno"
                         type="email"
                     />
+                </div>
+                <div className="flex justify-content-end my-2 gap-2">
+                    <Button label="Limpar" type="reset" severity="warning" icon="pi pi-eraser" />
+                    <Button label="Cadastrar" type="submit" severity="success" icon="pi pi-check-circle" />
                 </div>
             </form>
         </div>
