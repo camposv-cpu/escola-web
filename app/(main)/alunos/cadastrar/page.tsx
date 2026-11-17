@@ -1,20 +1,46 @@
 'use client'
+import { alunoService } from '@/services/aluno-service'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { InputText } from 'primereact/inputtext'
+import { Toast } from 'primereact/toast'
 import { Nullable } from 'primereact/ts-helpers'
-import { useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 
 export default function CadastrarAluno() {
     const [matricula, setMatricula] = useState('')
     const [nome, setNome] = useState('')
     const [nascimento, setNascimento] = useState<Nullable<Date>>(null)
     const [email, setEmail] = useState('')
+    const [carregando, setCarregando] = useState(false)
+    const notificacao = useRef<Toast>(null)
+
+    async function salvarAluno(evento: FormEvent<HTMLFormElement>) {
+        evento.preventDefault()
+        setCarregando(true)
+        try {
+            const resposta = alunoService.criar({
+                matricula,
+                nome,
+                nascimento,
+                email
+            })
+        } catch (erro) {
+            notificacao.current?.show({
+                summary: 'Erro ao cadastrar o aluno.',
+                severity: 'error',
+                detail: erro as string
+            })
+        } finally {
+            setCarregando(false)
+        }
+    }
 
     return (
         <div>
+            <Toast ref={notificacao} />
             <h3>Cadastrar novo aluno</h3>
-            <form className="flex flex-column gap-2">
+            <form onSubmit={salvarAluno} className="flex flex-column gap-2">
                 <div className="flex flex-column gap-1">
                     <label htmlFor="matricula" className="font-semibold">
                         Matricula
@@ -66,8 +92,8 @@ export default function CadastrarAluno() {
                     />
                 </div>
                 <div className="flex justify-content-end my-2 gap-2">
-                    <Button label="Limpar" type="reset" severity="warning" icon="pi pi-eraser" />
-                    <Button label="Cadastrar" type="submit" severity="success" icon="pi pi-check-circle" />
+                    <Button disabled={carregando} label="Limpar" type="reset" severity="warning" icon="pi pi-eraser" />
+                    <Button loading={carregando} label="Cadastrar" type="submit" severity="success" icon="pi pi-check-circle" />
                 </div>
             </form>
         </div>
