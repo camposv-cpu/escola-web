@@ -1,19 +1,53 @@
 'use client'
 import { alunoService } from '@/services/aluno-service'
+import { useRouter } from 'next/navigation'
 import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import { InputText } from 'primereact/inputtext'
 import { Toast } from 'primereact/toast'
 import { Nullable } from 'primereact/ts-helpers'
-import { FrormEvent, useState, useRef } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 
 export default function CadastrarAluno() {
     const [matricula, setMatricula] = useState('')
     const [nome, setNome] = useState('')
     const [nascimento, setNascimento] = useState<Nullable<Date>>(null)
     const [email, setEmail] = useState('')
-    const [carregando,setCarregando]= useState(false)
+    const [carregando, setCarregando] = useState(false)
     const notificacao = useRef<Toast>(null)
+    const router = useRouter()
+
+    async function salvarAluno(evento: FormEvent<HTMLFormElement>) {
+        evento.preventDefault()
+        setCarregando(true)
+        try {
+            const resposta = await alunoService.criar({
+                matricula,
+                nome,
+                nascimento,
+                email
+            })
+            notificacao.current?.show({
+                summary: 'Aluno cadastrado com sucesso!',
+                severity: 'success',
+                detail: 'O aluno foi salvo na base de dados.'
+            })
+            setMatricula('')
+            setNome('')
+            setNascimento(null)
+            setEmail('')
+
+            router.push('/alunos')
+        } catch (erro) {
+            notificacao.current?.show({
+                summary: 'Erro ao cadastrar o aluno.',
+                severity: 'error',
+                detail: String(erro)
+            })
+        } finally {
+            setCarregando(false)
+        }
+    }
 
 
     async function salvarAlumo(evento: FrormEvent<HTMLFormElement>) {
