@@ -33,7 +33,6 @@ export interface Aluno {
     email: string
     /** Data em ISO 8601, ex.: 2003-05-10T00:00:00.000Z */
     nascimento: string
-    curso_id: number
 }
 
 export interface Turma {
@@ -94,6 +93,7 @@ export interface TurmaComRelacoes extends Turma {
 
 export type CursoPayload = Omit<Curso, 'id'>
 export type DisciplinaPayload = Omit<Disciplina, 'id'>
-export type ProfessorPayload = Omit<Professor, 'id'>
-export type AlunoPayload = Omit<Aluno, 'id'>
+/** O back espera `nascimento` como Date (enviado em ISO, à meia-noite UTC). */
+export type ProfessorPayload = Omit<Professor, 'id' | 'nascimento'> & { nascimento: Date }
+export type AlunoPayload = Omit<Aluno, 'id' | 'nascimento'> & { nascimento: Date }
 export type TurmaPayload = Omit<Turma, 'id'>

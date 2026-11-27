@@ -7,6 +7,11 @@ export const professorService = {
         return data;
     },
 
+    async buscarPorId(id: number) {
+        const { data } = await api.get<ProfessorComRelacoes>(`/professores/${id}`);
+        return data;
+    },
+
     async criar(professor: ProfessorPayload) {
         const { data } = await api.post<Professor>('/professores', professor);
         return data;

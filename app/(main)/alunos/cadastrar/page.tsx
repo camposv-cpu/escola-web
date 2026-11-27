@@ -19,9 +19,19 @@ export default function CadastrarAluno() {
 
     async function salvarAluno(evento: FormEvent<HTMLFormElement>) {
         evento.preventDefault()
+
+        if (!nascimento) {
+            notificacao.current?.show({
+                summary: 'Data de nascimento obrigatória.',
+                severity: 'warn',
+                detail: 'Informe a data de nascimento do aluno.'
+            })
+            return
+        }
+
         setCarregando(true)
         try {
-            const resposta = await alunoService.criar({
+            await alunoService.criar({
                 matricula,
                 nome,
                 nascimento,
