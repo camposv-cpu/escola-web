@@ -7,6 +7,11 @@ export const disciplinaService = {
         return data;
     },
 
+    async buscarPorId(id: number) {
+        const { data } = await api.get<DisciplinaComCursos>(`/disciplinas/${id}`);
+        return data;
+    },
+
     async criar(disciplina: DisciplinaPayload) {
         const { data } = await api.post<Disciplina>('/disciplinas', disciplina);
         return data;

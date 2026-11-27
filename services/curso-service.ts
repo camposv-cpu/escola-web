@@ -7,6 +7,11 @@ export const cursoService = {
         return data;
     },
 
+    async buscarPorId(id: number) {
+        const { data } = await api.get<CursoComDisciplinas>(`/cursos/${id}`);
+        return data;
+    },
+
     async criar(curso: CursoPayload) {
         const { data } = await api.post<Curso>('/cursos', curso);
         return data;

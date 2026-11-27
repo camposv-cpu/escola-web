@@ -7,6 +7,11 @@ export const turmaService = {
         return data;
     },
 
+    async buscarPorId(id: number) {
+        const { data } = await api.get<TurmaComRelacoes>(`/turmas/${id}`);
+        return data;
+    },
+
     async criar(turma: TurmaPayload) {
         const { data } = await api.post<Turma>('/turmas', turma);
         return data;

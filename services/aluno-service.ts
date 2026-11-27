@@ -7,6 +7,11 @@ export const alunoService = {
         return data;
     },
 
+    async buscarPorId(id: number) {
+        const { data } = await api.get<AlunoComRelacoes>(`/alunos/${id}`);
+        return data;
+    },
+
     async criar(aluno: AlunoPayload) {
         const { data } = await api.post<Aluno>('/alunos', aluno);
         return data;
